@@ -25,6 +25,14 @@ on:
       service-account:
         required: true
         type: string
+      db-username:
+        required: false
+        type: string
+        default: ''
+      db-password:
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -64,3 +72,6 @@ jobs:
           region: ${{ inputs.gcp-region }}
           image: ${{ env.IMAGE }}
           project_id: ${{ inputs.gcp-project-id }}
+          env_vars: |
+            DB_USERNAME=${{ inputs.db-username }}
+            DB_PASSWORD=${{ inputs.db-password }}
