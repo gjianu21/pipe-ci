@@ -72,5 +72,7 @@ jobs:
           image: ${{ env.IMAGE }}
           project_id: ${{ inputs.gcp-project-id }}
           env_vars: |
+            SPRING_PROFILES_ACTIVE=prod
             DB_USERNAME=${{ inputs.db-username }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            OAUTH2_BFF_CLIENT_SECRET=${{ secrets.OAUTH2_BFF_CLIENT_SECRET }}
