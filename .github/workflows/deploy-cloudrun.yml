@@ -29,10 +29,9 @@ on:
         required: false
         type: string
         default: ''
-      db-password:
+    secrets:
+      DB_PASSWORD:
         required: false
-        type: string
-        default: ''
 
 permissions:
   contents: read
@@ -74,4 +73,4 @@ jobs:
           project_id: ${{ inputs.gcp-project-id }}
           env_vars: |
             DB_USERNAME=${{ inputs.db-username }}
-            DB_PASSWORD=${{ inputs.db-password }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
