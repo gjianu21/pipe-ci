@@ -1,0 +1,43 @@
+name: Java Security Scan (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        required: false
+        type: string
+        default: '25'
+      working-directory:
+        required: false
+        type: string
+        default: '.'
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make mvnw executable
+        run: chmod +x ${{ inputs.working-directory }}/mvnw
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.java-version }}
+          cache: maven
+      - name: Cache OWASP dependency-check DB
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository/org/owasp/dependency-check-data
+          key: owasp-dc-db-${{ runner.os }}
+      - name: OWASP Dependency-Check
+        continue-on-error: true
+        run: ./mvnw org.owasp:dependency-check-maven:check -DnvdApiKey=${{ secrets.NVD_API_KEY }}
+      - name: Upload dependency-check report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: ${{ inputs.working-directory }}/target/dependency-check-report.html
