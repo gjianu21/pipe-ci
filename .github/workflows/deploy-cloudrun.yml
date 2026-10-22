@@ -29,6 +29,10 @@ on:
         required: false
         type: string
         default: ''
+      build-args:
+        required: false
+        type: string
+        default: ''
     secrets:
       DB_PASSWORD:
         required: false
@@ -60,7 +64,11 @@ jobs:
       - name: Build and push image
         run: |
           IMAGE="${{ inputs.gcp-region }}-docker.pkg.dev/${{ inputs.gcp-project-id }}/${{ inputs.artifact-repo }}/${{ inputs.service-name }}:${{ github.sha }}"
-          docker build -t "$IMAGE" ${{ inputs.working-directory }}
+          BUILD_ARGS=""
+          while IFS= read -r line; do
+            [ -n "$line" ] && BUILD_ARGS="$BUILD_ARGS --build-arg $line"
+          done <<< "${{ inputs.build-args }}"
+          docker build $BUILD_ARGS -t "$IMAGE" ${{ inputs.working-directory }}
           docker push "$IMAGE"
           echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
 
