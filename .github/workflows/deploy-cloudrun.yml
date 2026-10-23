@@ -84,7 +84,7 @@ jobs:
             DB_USERNAME=${{ inputs.db-username }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             OAUTH2_BFF_CLIENT_SECRET=${{ secrets.OAUTH2_BFF_CLIENT_SECRET }}
-            MAIL_USERNAME=bfa090001@smtp-brevo.com
+            MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
             MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
 
       - name: Allow public (unauthenticated) access
