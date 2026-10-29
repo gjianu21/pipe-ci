@@ -33,6 +33,14 @@ on:
         required: false
         type: string
         default: ''
+      min-instances:
+        required: false
+        type: string
+        default: '0'
+      max-instances:
+        required: false
+        type: string
+        default: '1'
     secrets:
       DB_PASSWORD:
         required: false
@@ -80,6 +88,7 @@ jobs:
           image: ${{ env.IMAGE }}
           project_id: ${{ inputs.gcp-project-id }}
           env_vars: |
+            flags: --min-instances=${{ inputs.min-instances }} --max-instances=${{ inputs.max-instances }}
             SPRING_PROFILES_ACTIVE=prod
             DB_USERNAME=${{ inputs.db-username }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
