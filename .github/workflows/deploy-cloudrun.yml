@@ -87,8 +87,8 @@ jobs:
           region: ${{ inputs.gcp-region }}
           image: ${{ env.IMAGE }}
           project_id: ${{ inputs.gcp-project-id }}
+          flags: --min-instances=${{ inputs.min-instances }} --max-instances=${{ inputs.max-instances }}
           env_vars: |
-            flags: --min-instances=${{ inputs.min-instances }} --max-instances=${{ inputs.max-instances }}
             SPRING_PROFILES_ACTIVE=prod
             DB_USERNAME=${{ inputs.db-username }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
